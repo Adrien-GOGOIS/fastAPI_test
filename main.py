@@ -1,12 +1,22 @@
-from typing import Union
+from pydantic import BaseModel
 from fastapi import FastAPI
 from enum import Enum
+import random
 
 from database import fake_items
 
 items = fake_items.fake_items_db
 
 app = FastAPI()
+
+
+class Item(BaseModel):
+    id: int | None = random.randint(10, 10000000)
+    item: str
+    brand: str
+    color: str
+    price: int
+    available: bool | None = False
 
 
 class Cats(str, Enum):
@@ -40,6 +50,22 @@ async def read_file(file_path: str):
         }
 
 
+# Paramètres multiples
+@app.get("/items/filter")
+async def read_user_item(color: str | None = None, max_price: int | None = None):
+    filtered_items = []
+    if color:
+        for item in items:
+            if item['color'] == color:
+                filtered_items.append(item)
+    if max_price:
+        filtered_items = []
+        for item in items:
+            if item['price'] <= max_price:
+                filtered_items.append(item)
+    return filtered_items
+
+
 # Query parameters
 @app.get("/items")
 async def read_item(skip: int = 0, limit: int = 10):  # Valeur par défault de 0 à 10
@@ -61,3 +87,11 @@ async def get_item(item_id: int, color: str | None = None):  # Color est soit un
                 }
             return f"Couleur non disponible pour l'objet {actual_item['item']}"
         return actual_item
+
+
+# POST
+@app.post("/items/")
+async def create_item(item: Item):
+    items.append(item)
+    return items
+

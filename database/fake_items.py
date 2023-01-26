@@ -31,4 +31,28 @@ fake_items_db = [
         "price": 5,
         "available": True,
     },
+{
+        "id": 5,
+        "item": "Bag",
+        "brand": "Les Plateaux Sauvages",
+        "color": "yellow",
+        "price": 2,
+        "available": True,
+    },
+{
+        "id": 6,
+        "item": "Sweat",
+        "brand": "Zenika",
+        "color": "blue",
+        "price": 50,
+        "available": False,
+    },
+{
+        "id": 7,
+        "item": "Sweat",
+        "brand": "Enedis",
+        "color": "yellow",
+        "price": 30,
+        "available": True,
+    },
 ]
